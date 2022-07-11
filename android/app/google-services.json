@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "287427916927",
+    "project_id": "lofo-50856",
+    "storage_bucket": "lofo-50856.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:287427916927:android:23c7a16aa42433d1d2fb4a",
+        "android_client_info": {
+          "package_name": "com.example.flower_selling_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "287427916927-mk68tgbsp4l4f1k17qvl0d6gdhdcjnbr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPpFQZlm7U9R9bnHr0UB2a4T7Hh6fjM4M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "287427916927-mk68tgbsp4l4f1k17qvl0d6gdhdcjnbr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
