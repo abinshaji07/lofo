@@ -1,11 +1,8 @@
-
- import 'package:flutter/material.dart';
-import 'package:progress_timeline/progress_timeline.dart';
-
+import 'package:geolocator/geolocator.dart';
+import 'package:flutter/material.dart';
 
 
-
- class addt extends StatefulWidget {
+class addt extends StatefulWidget {
   const addt({Key? key}) : super(key: key);
 
   @override
@@ -13,117 +10,407 @@ import 'package:progress_timeline/progress_timeline.dart';
 }
 
 class _addtState extends State<addt> {
- 
- 
-  late ProgressTimeline screenProgress;
-  
-  
-
-  List<SingleState> allStages = [
-    
-    SingleState(stateTitle: "Food Info"),
-    SingleState(stateTitle: "Gallery"),
+  int tag = 1;
+  int _value = 0;
+    String dropdownvalue = 'Restaurant';  
+      var items = [   
+    'Restaurant',
+    'Homemade',
     
   ];
 
-  @override
-  void initState() {
-    //  mainAxisAlignment: MainAxisAlignment.center;
-    screenProgress = new ProgressTimeline(
-      
-      states: allStages,
-      iconSize: 35,
-    );
-    super.initState();
-  }
-   
+
+  int tag1 = 1;
+  
+  String qtyvalue ='kg';
+    var qty = [   
+    'kg',
+    'ltr',
+    'ml','gm','pkt','nos',
+    
+  ];
+  
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-
-      appBar: AppBar(
-        title: const Text('Create Ads'),
+       appBar: AppBar(
+         title: const Text('Create Ads'),
         backgroundColor: Colors.red,
-        
-      ),
-      body: Center(
-        child: Column(
-//          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          // crossAxisAlignment: CrossAxisAlignment.end,
-          children: <Widget>[
-            Padding(
+       ),
+       body:SafeArea(
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Align(
+                alignment: AlignmentDirectional(-1, 0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Text(
+                          'Free/Deal',
+                          style: TextStyle(
+                            color: Colors.grey[800],
+                           fontWeight: FontWeight.bold,
+                           fontSize: 20
+                          ),
 
+                          
+         
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
+
+               Row(
                 
+                children: <Widget>[
+                  ChoiceChip(
+                    pressElevation: 0.0,
+      selectedColor: Colors.blue,
+      backgroundColor: Colors.grey[100],
+      label: Text("Free"),
+      selected: _value == 0,
+      onSelected: (bool selected) {
+        setState(() {
+          _value = (selected ? 0 : null)!;
+        });
+      },
+    ),
+       ChoiceChip(
+      pressElevation: 0.0,
+      selectedColor: Colors.blue,
+      backgroundColor: Colors.grey[100],
+      label: Text("Deal"),
+      selected: _value == 1,
+      onSelected: (bool selected) {
+        setState(() {
+          _value = (selected ? 1 : null)!;
+        });
+      },
+    ),
 
-              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+    
+
+
+                  
+                ],
+               ),
+
+               Row(
+                 mainAxisSize: MainAxisSize.max,
+
+                children: [
+                  Text("Type",
+                  style: TextStyle(
+                     color: Colors.grey[800],
+                           fontWeight: FontWeight.bold,
+                           fontSize: 20
+
+                  ),
+                  )
+                  
+                ],
+
+
+               ),
+               Row(
+                children: [
+                  DropdownButton(
+                    
+                    dropdownColor: Colors.white,
+                    value: dropdownvalue,
+                     icon: const Icon(Icons.keyboard_arrow_down), 
+                    items: items.map((String items) {
+                return DropdownMenuItem(
+                  value: items,
+                  child: Text(items),
+                );
+              }).toList(),
+               onChanged: (String? newValue) {
+                setState(() {
+                  dropdownvalue = newValue!;
+                });
+              },
               
-              child: screenProgress,
-            ),
-            SizedBox(
-              height: 90,
-            ),
-            TextButton(
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Text(
-                  "Goto Next Stage",
-                  style: TextStyle(fontSize: 20, color: Colors.white),
-                ),
-              ),
-             /*  color: Colors.green,
-              shape: new RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(20.0)), */
-              onPressed: () {
-                screenProgress.gotoNextStage();
+
+                  ),
+                ],
+
+               ),
+
+
+
+                Row(
+                 mainAxisSize: MainAxisSize.max,
+
+                children: [
+                  Text("Title",
+                  style: TextStyle(
+                     color: Colors.grey[800],
+                           fontWeight: FontWeight.bold,
+                           fontSize: 20
+
+                  ),
+                  )
+                  
+                ],
+
+
+               ),
+               Column(
+                children: [
+                  TextField(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      fillColor: Colors.white,filled: true,
+                      hintText: 'Name the food Item ...',
+                    ),
+                  ),
+                ],
+               ),
+
+
+               
+                Row(
+                 mainAxisSize: MainAxisSize.max,
+
+                children: [
+                  Text("Description",
+                  style: TextStyle(
+                     color: Colors.grey[800],
+                           fontWeight: FontWeight.bold,
+                           fontSize: 20
+
+                  ),
+                  )
+                  
+                ],
+
+
+               ),
+               Column(
+                children: [
+                  TextField(
+                    decoration: const InputDecoration(
+                      
+                      border: OutlineInputBorder(),
+                      fillColor: Colors.white,filled: true,
+                      hintText: 'Type something about the food ...',
+                    ),
+                  ),
+                ],
+               ),
+             
+
+
+
+                Row(
+                 mainAxisSize: MainAxisSize.max,
+
+                children: [
+                  Text("Set Price",
+                  style: TextStyle(
+                     color: Colors.grey[800],
+                           fontWeight: FontWeight.bold,
+                           fontSize: 20
+
+                  ),
+                  )
+                  
+                ],
+
+
+               ),
+               Column(
+                children: [
+                  TextField(
+                    decoration: const InputDecoration(
+                     
+                     fillColor: Colors.white, filled: true,
+                      border: OutlineInputBorder(),
+                      
+                      hintText: 'Price per Qty',
+                    ),
+                  ),
+                ],
+               ),
+
+
+
+                Row(
+                 mainAxisSize: MainAxisSize.max,
+
+                children: [
+                  Text("Quantity",
+                  style: TextStyle(
+                     color: Colors.grey[800],
+                           fontWeight: FontWeight.bold,
+                           fontSize: 20
+
+                  ),
+                  )                  
+                ],
+               ),
+
+
+               
+                   Row(
+                    mainAxisSize: MainAxisSize.max,
+                     children: [
+                       Column(
+                        mainAxisSize: MainAxisSize.max,
+                         children:[ Container(
+                          width: 80,
+                          decoration: BoxDecoration(),
+                          child: 
+                              Align(
+                                 alignment: AlignmentDirectional(-0.1, 0),
+                              child: TextField(
+                                decoration: const InputDecoration(
+                                 
+                                 fillColor: Colors.white, filled: true,
+                                  border: OutlineInputBorder(),
+                                  
+                                  hintText: 'QTY',
+                                ),
+                              ),
+                            ),
+                         ),
+                          ],
+                         ),
+
+
+
+                         Align(
+                        alignment: AlignmentDirectional(0.05,0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            DropdownButton(
+                    
+                    dropdownColor: Colors.white,
+                    value: qtyvalue,
+                     icon: const Icon(Icons.keyboard_arrow_down), 
+                     
+                    items: qty.map((String items) {
+                     return DropdownMenuItem(
+                  value: items,
+                  child: Text(items),
+                  );
+                 }).toList(),
+                  onChanged: (String? newValue) {
+                 setState(() {
+                  qtyvalue = newValue!;
+                 });
               },
-            ),
-            SizedBox(
-              height: 50,
-            ),
-            TextButton(
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Text(
-                  "Goto Previous Stage",
-                  style: TextStyle(fontSize: 20, color: Colors.white),
-                ),
+
+                  ),
+
+                          ],
+                        ),
+                       )
+                     
+
+
+                     ]
+                       ),
+                       
+                     
+
+                     
+              Row(
+                 mainAxisSize: MainAxisSize.max,
+
+                children: [
+                  Text("Location",
+                  style: TextStyle(
+                     color: Colors.grey[800],
+                           fontWeight: FontWeight.bold,
+                           fontSize: 20
+
+                  ),
+                  )
+                  
+                ],
+
+
+               ),
+              Row(
+             children: [
+              Expanded(
+               child: ElevatedButton(onPressed: (){},
+                 child: Text("Set Location")),
               ),
-             /*  color: Colors.green,
-              shape: new RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(20.0)), */
-              onPressed: () {
-                screenProgress.gotoPreviousStage();
-              },
-            ),
-            SizedBox(
-              height: 50,
-            ),
-            TextButton(
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Text(
-                  "Fail Current Stage",
-                  style: TextStyle(fontSize: 20, color: Colors.white),
+                  
+                       
+                    
+                  ],
                 ),
-              ),
-            /*   color: Colors.green,
-              shape: new RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(20.0)), */
-              onPressed: () {
-                screenProgress.failCurrentStage();
-              },
-         )
-          ],
-        ),
-      ),
-      // This trailing comma makes auto-formatting nicer for build methods.
+
+
+
+                Row(
+                   mainAxisSize: MainAxisSize.max,
+
+                children: [
+                  Text("Add Image",
+                  style: TextStyle(
+                     color: Colors.grey[800],
+                           fontWeight: FontWeight.bold,
+                           fontSize: 20
+
+                  ),
+                  )
+                ]
+
+                ),
+             
+   
+
+
+
+
+
+
+
+
+
+
+
+            
+
+              
+            ]
+            
+            
+          )
+          
+          
+        )
+        
+        
+       ),
+
+       
     );
+    
   }
 }
-  
- 
 
 
- 
+
+
+
+
+
+   

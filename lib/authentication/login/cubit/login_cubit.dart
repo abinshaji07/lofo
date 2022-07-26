@@ -39,6 +39,7 @@ class LoginCubit extends Cubit<LoginState> {
     }
 
     if (!state.status.isValidated) return;
+      print("Logging in login");
 
     emit(state.copyWith(status: FormzStatus.submissionInProgress));
     try {
@@ -46,11 +47,12 @@ class LoginCubit extends Cubit<LoginState> {
         email: state.email.value,
         password: state.password.value,
       );
+      print("Completed login");
 
       emit(state.copyWith(status: FormzStatus.submissionSuccess));
     } on LogInWithEmailAndPasswordFailure catch (_) {
       
       emit(state.copyWith(status: FormzStatus.submissionFailure));
-    }
+    } 
   }
 }
