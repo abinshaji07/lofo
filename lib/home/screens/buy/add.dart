@@ -1,5 +1,7 @@
 
+import 'package:flower_selling_app/location_services.dart';
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 
 
 
@@ -8,9 +10,17 @@ class addt extends StatefulWidget {
 
   @override
   State<addt> createState() => _addtState();
+
 }
 
 class _addtState extends State<addt> {
+
+   late bool _serviceEnabled;
+  late PermissionStatus _permissionGranted;
+  String? _address;
+  
+
+
   int tag = 1;
   int _value = 0;
     String dropdownvalue = 'Restaurant';  
@@ -19,6 +29,7 @@ class _addtState extends State<addt> {
     'Homemade',
     
   ];
+ 
  
 
 
@@ -32,6 +43,50 @@ class _addtState extends State<addt> {
     
   ];
   
+
+  String? userLocation;
+  
+
+   Future<void> _getLocation() async {
+    Location location = Location();
+
+    // Check if location service is enable
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    // Check if permission is granted
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    final locationData = await location.getLocation();
+    final lat = locationData.latitude!.toDouble();
+    final lon = locationData.longitude!.toDouble();
+
+    _getAddress(lat, lon);
+
+    
+  }
+
+  void _getAddress(double lat, double lon) async {
+    String address = await LocationServices().geoCodeFromCoordinates(
+      lat,
+      lon,
+    );
+
+   setState(() {
+      userLocation = address;
+   });
+  }
 
 
   @override
@@ -350,9 +405,13 @@ class _addtState extends State<addt> {
               Row(
              children: [
               Expanded(
-               child: ElevatedButton(onPressed: (){},
+               child: ElevatedButton(onPressed: (){
+                  _getLocation();
+
+               },
                  child: Text("Set Location")),
               ),
+
                   
                        
                     
@@ -365,6 +424,8 @@ class _addtState extends State<addt> {
                    mainAxisSize: MainAxisSize.max,
 
                 children: [
+              Text(userLocation == null ? "no location" : userLocation!),
+
                   Text("Add Image",
                   style: TextStyle(
                      color: Colors.grey[800],
