@@ -1,6 +1,10 @@
 
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flower_selling_app/location_services.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
 
 
@@ -43,7 +47,7 @@ class _addtState extends State<addt> {
     
   ];
   
-
+//location start
   String? userLocation;
   
 
@@ -87,7 +91,31 @@ class _addtState extends State<addt> {
       userLocation = address;
    });
   }
+//location ended
 
+//upload image start
+
+   File? image1;
+   Future pickImage1() async {
+    final image = await ImagePicker().pickImage(source:ImageSource.camera );
+    if(image == null) return;
+    final imageTemporary = File(image.path);
+    setState(() => this.image1 = imageTemporary);
+  }
+
+
+  //  File? image2;
+   Future pickImage2() async {
+    final image = await ImagePicker().pickImage(source:ImageSource.gallery );
+    if(image == null) return;
+    final imageTemporary = File(image.path);
+    setState(() => this.image1 = imageTemporary);
+    
+  }
+
+CollectionReference flowers = FirebaseFirestore.instance.collection('flowers');
+
+late String title,no,des,price,photo,fd,type,qua,kg,loc;
 
   @override
   Widget build(BuildContext context) {
@@ -99,362 +127,492 @@ class _addtState extends State<addt> {
        body:SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Align(
-                alignment: AlignmentDirectional(-1, 0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                // Align(
+                //   alignment: AlignmentDirectional(-1, 0),
+                //   child: Column(
+                //     mainAxisSize: MainAxisSize.max,
+                //     children: [
+                //       Row(
+                //         mainAxisSize: MainAxisSize.max,
+                //         children: [
+                //           Text(
+                //             'Free/Deal',
+                //             style: TextStyle(
+                //               color: Colors.grey[800],
+                //              fontWeight: FontWeight.bold,
+                //              fontSize: 20
+                //             ),
+          
+                            
+                   
+                //           ),
+                //         ],
+                //       ),
+                //     ],
+                //   ),
+                // ),
+          
+          
+              //            Row(
+                  
+              //             children: <Widget>[
+              //               ChoiceChip(
+              //                 pressElevation: 0.0,
+              //   selectedColor: Colors.blue,
+              //   backgroundColor: Colors.grey[100],
+              //   label: Text("Free"),
+              //   selected: _value == 0,
+              //   onSelected: (bool selected) {
+              //     setState(() {
+              //       _value = (selected ? 0 : null)!;
+              //     });
+              //   },
+              // ),
+              //    ChoiceChip(
+              //   pressElevation: 0.0,
+              //   selectedColor: Colors.blue,
+              //   backgroundColor: Colors.grey[100],
+              //   label: Text("Deal"),
+              //   selected: _value == 1,
+              //   onSelected: (bool selected) {
+              //     setState(() {
+              //       _value = (selected ? 1 : null)!;
+              //     });
+              //   },
+              // ),
+          
+              
+          
+          
+                    
+              //             ],
+              //            ),
+          
+                 Row(
+                   mainAxisSize: MainAxisSize.max,
+          
                   children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Text(
-                          'Free/Deal',
-                          style: TextStyle(
-                            color: Colors.grey[800],
-                           fontWeight: FontWeight.bold,
-                           fontSize: 20
-                          ),
-
-                          
-         
-                        ),
-                      ],
+                    Text("Type",
+                    style: TextStyle(
+                       color: Colors.grey[800],
+                             fontWeight: FontWeight.bold,
+                             fontSize: 20
+          
+                    ),
+                    )
+                    
+                  ],
+          
+          
+                 ),
+                 Row(
+                  children: [
+                    DropdownButton(
+                      
+                      dropdownColor: Colors.white,
+                      value: dropdownvalue,
+                       icon: const Icon(Icons.keyboard_arrow_down), 
+                      items: items.map((String items) {
+                  return DropdownMenuItem(
+                    value: items,
+                    child: Text(items),
+                  );
+                }).toList(),
+                 onChanged: (String? newValue) {
+                  setState(() {
+                    dropdownvalue = newValue!;
+                    type = newValue;
+                  });
+                },
+                
+          
                     ),
                   ],
-                ),
-              ),
-
-
-               Row(
-                
-                children: <Widget>[
-                  ChoiceChip(
-                    pressElevation: 0.0,
-      selectedColor: Colors.blue,
-      backgroundColor: Colors.grey[100],
-      label: Text("Free"),
-      selected: _value == 0,
-      onSelected: (bool selected) {
-        setState(() {
-          _value = (selected ? 0 : null)!;
-        });
-      },
-    ),
-       ChoiceChip(
-      pressElevation: 0.0,
-      selectedColor: Colors.blue,
-      backgroundColor: Colors.grey[100],
-      label: Text("Deal"),
-      selected: _value == 1,
-      onSelected: (bool selected) {
-        setState(() {
-          _value = (selected ? 1 : null)!;
-        });
-      },
-    ),
-
-    
-
-
-                  
-                ],
-               ),
-
-               Row(
-                 mainAxisSize: MainAxisSize.max,
-
-                children: [
-                  Text("Type",
-                  style: TextStyle(
-                     color: Colors.grey[800],
-                           fontWeight: FontWeight.bold,
-                           fontSize: 20
-
-                  ),
-                  )
-                  
-                ],
-
-
-               ),
-               Row(
-                children: [
-                  DropdownButton(
-                    
-                    dropdownColor: Colors.white,
-                    value: dropdownvalue,
-                     icon: const Icon(Icons.keyboard_arrow_down), 
-                    items: items.map((String items) {
-                return DropdownMenuItem(
-                  value: items,
-                  child: Text(items),
-                );
-              }).toList(),
-               onChanged: (String? newValue) {
-                setState(() {
-                  dropdownvalue = newValue!;
-                });
-              },
-              
-
-                  ),
-                ],
-
-               ),
-
-
-
-                Row(
-                 mainAxisSize: MainAxisSize.max,
-
-                children: [
-                  Text("Title",
-                  style: TextStyle(
-                     color: Colors.grey[800],
-                           fontWeight: FontWeight.bold,
-                           fontSize: 20
-
-                  ),
-                  )
-                  
-                ],
-
-
-               ),
-               Column(
-                children: [
-                  TextField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      fillColor: Colors.white,filled: true,
-                      hintText: 'Name the food Item ...',
-                    ),
-                  ),
-                ],
-               ),
-
-
-               
-                Row(
-                 mainAxisSize: MainAxisSize.max,
-
-                children: [
-                  Text("Description",
-                  style: TextStyle(
-                     color: Colors.grey[800],
-                           fontWeight: FontWeight.bold,
-                           fontSize: 20
-
-                  ),
-                  )
-                  
-                ],
-
-
-               ),
-               Column(
-                children: [
-                  TextField(
-                    decoration: const InputDecoration(
-                      
-                      border: OutlineInputBorder(),
-                      fillColor: Colors.white,filled: true,
-                      hintText: 'Type something about the food ...',
-                    ),
-                  ),
-                ],
-               ),
-             
-
-
-
-                Row(
-                 mainAxisSize: MainAxisSize.max,
-
-                children: [
-                  Text("Set Price",
-                  style: TextStyle(
-                     color: Colors.grey[800],
-                           fontWeight: FontWeight.bold,
-                           fontSize: 20
-
-                  ),
-                  )
-                  
-                ],
-
-
-               ),
-               Column(
-                children: [
-                  TextField(
-                    decoration: const InputDecoration(
+          
+                 ),
+          
                      
-                     fillColor: Colors.white, filled: true,
-                      border: OutlineInputBorder(),
+                  Row(
+                     mainAxisSize: MainAxisSize.max,
+            
+                    children: [
+                      Text("Phone Number",
+                      style: TextStyle(
+                         color: Colors.grey[800],
+                               fontWeight: FontWeight.bold,
+                               fontSize: 20
+            
+                      ),
+                      )
                       
-                      hintText: 'Price per Qty',
+                    ],
+            
+            
+                   ),
+                   Column(
+                    children: [
+                      TextField(
+                         onChanged: (value){
+                          no = value;
+                          },
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          fillColor: Colors.white,filled: true,
+                          hintText: 'Enter your phone number...',
+                        ),
+                      ),
+                    ],
+                   ),
+          
+                  Row(
+                   mainAxisSize: MainAxisSize.max,
+          
+                  children: [
+                    Text("Title",
+                    style: TextStyle(
+                       color: Colors.grey[800],
+                             fontWeight: FontWeight.bold,
+                             fontSize: 20
+          
                     ),
-                  ),
-                ],
-               ),
-
-
-
-                Row(
-                 mainAxisSize: MainAxisSize.max,
-
-                children: [
-                  Text("Quantity",
-                  style: TextStyle(
-                     color: Colors.grey[800],
-                           fontWeight: FontWeight.bold,
-                           fontSize: 20
-
-                  ),
-                  )                  
-                ],
-               ),
-
-
+                    )
+                    
+                  ],
+          
+          
+                 ),
+                 Column(
+                  children: [
+                    TextField(
+                      onChanged: (value){
+                        title = value;
+                      },
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        fillColor: Colors.white,filled: true,
+                        hintText: 'Name the food Item ...',
+                      ),
+                    ),
+                  ],
+                 ),
+          
+          
+                 
+                  Row(
+                   mainAxisSize: MainAxisSize.max,
+          
+                  children: [
+                    Text("Description",
+                    style: TextStyle(
+                       color: Colors.grey[800],
+                             fontWeight: FontWeight.bold,
+                             fontSize: 20
+          
+                    ),
+                    )
+                    
+                  ],
+          
+          
+                 ),
+                 Column(
+                  children: [
+                    TextField(onChanged: (value){
+                        des = value;},
+                      decoration: const InputDecoration(
+                        
+                        border: OutlineInputBorder(),
+                        fillColor: Colors.white,filled: true,
+                        hintText: 'Type something about the food ...',
+                      ),
+                    ),
+                  ],
+                 ),
                
-                   Row(
-                    mainAxisSize: MainAxisSize.max,
-                     children: [
-                       Column(
-                        mainAxisSize: MainAxisSize.max,
-                         children:[ Container(
-                          width: 80,
-                          decoration: BoxDecoration(),
-                          child: 
-                              Align(
-                                 alignment: AlignmentDirectional(-0.1, 0),
-                              child: TextField(
-                                decoration: const InputDecoration(
-                                 
-                                 fillColor: Colors.white, filled: true,
-                                  border: OutlineInputBorder(),
-                                  
-                                  hintText: 'QTY',
+          
+          
+          
+                  Row(
+                   mainAxisSize: MainAxisSize.max,
+          
+                  children: [
+                    Text("Set Price",
+                    style: TextStyle(
+                       color: Colors.grey[800],
+                             fontWeight: FontWeight.bold,
+                             fontSize: 20
+          
+                    ),
+                    )
+                    
+                  ],
+          
+          
+                 ),
+                 Column(
+                  children: [
+                    TextField(
+                      onChanged: (value){
+                        price = value;},
+                      decoration: const InputDecoration(
+                       
+                       fillColor: Colors.white, filled: true,
+                        border: OutlineInputBorder(),
+                        
+                        hintText: 'Price per Qty',
+                      ),
+                    ),
+                  ],
+                 ),
+          
+          
+          
+                  Row(
+                   mainAxisSize: MainAxisSize.max,
+          
+                  children: [
+                    Text("Quantity",
+                    style: TextStyle(
+                       color: Colors.grey[800],
+                             fontWeight: FontWeight.bold,
+                             fontSize: 20
+          
+                    ),
+                    )                  
+                  ],
+                 ),
+          
+          
+                 
+                     Row(
+                      mainAxisSize: MainAxisSize.max,
+                       children: [
+                         Column(
+                          mainAxisSize: MainAxisSize.max,
+                           children:[ Container(
+                            width: 80,
+                            decoration: BoxDecoration(),
+                            child: 
+                                Align(
+                                   alignment: AlignmentDirectional(-0.1, 0),
+                                child: TextField(
+                                  onChanged: (value){
+                        qua = value;},
+                                  decoration: const InputDecoration(
+                                   
+                                   fillColor: Colors.white, filled: true,
+                                    border: OutlineInputBorder(),
+                                    
+                                    hintText: 'QTY',
+                                  ),
                                 ),
                               ),
-                            ),
-                         ),
-                          ],
-                         ),
-
-
-
-                         Align(
-                        alignment: AlignmentDirectional(0.05,0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            DropdownButton(
-                    
-                    dropdownColor: Colors.white,
-                    value: qtyvalue,
-                     icon: const Icon(Icons.keyboard_arrow_down), 
-                     
-                    items: qty.map((String items) {
-                     return DropdownMenuItem(
-                  value: items,
-                  child: Text(items),
-                  );
-                 }).toList(),
-                  onChanged: (String? newValue) {
-                 setState(() {
-                  qtyvalue = newValue!;
-                 });
-              },
-
-                  ),
-
-                          ],
-                        ),
-                       )
-                     
-
-
-                     ]
-                       ),
+                           ),
+                            ],
+                           ),
+          
+          
+          
+                           Align(
+                          alignment: AlignmentDirectional(0.05,0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              DropdownButton(
+                      
+                      dropdownColor: Colors.white,
+                      value: qtyvalue,
+                       icon: const Icon(Icons.keyboard_arrow_down), 
                        
-                     
-
-                     
-              Row(
-                 mainAxisSize: MainAxisSize.max,
-
-                children: [
-                  Text("Location",
-                  style: TextStyle(
-                     color: Colors.grey[800],
-                           fontWeight: FontWeight.bold,
-                           fontSize: 20
-
-                  ),
-                  )
-                  
-                ],
-
-
-               ),
-              Row(
-             children: [
-              Expanded(
-               child: ElevatedButton(onPressed: (){
-                  _getLocation();
-
-               },
-                 child: Text("Set Location")),
-              ),
-
-                  
+                      items: qty.map((String items) {
+                       return DropdownMenuItem(
+                    value: items,
+                    child: Text(items),
+                    );
+                   }).toList(),
+                    onChanged: (String? newValue) {
+                   setState(() {
+                    qtyvalue = newValue!;
+                    kg = newValue;
+                   });
+                },
+          
+                    ),
+          
+                            ],
+                          ),
+                         )
                        
-                    
-                  ],
-                ),
-
-
-
+          
+          
+                       ]
+                         ),
+                         
+                       
+          
+                       
                 Row(
                    mainAxisSize: MainAxisSize.max,
-
-                children: [
-              Text(userLocation == null ? "no location" : userLocation!),
-
-                  Text("Add Image",
-                  style: TextStyle(
-                     color: Colors.grey[800],
-                           fontWeight: FontWeight.bold,
-                           fontSize: 20
-
-                  ),
-                  )
-                ]
-
+          
+                  children: [
+                    Text("Location",
+                    style: TextStyle(
+                       color: Colors.grey[800],
+                             fontWeight: FontWeight.bold,
+                             fontSize: 20
+          
+                    ),
+                    )
+                    
+                  ],
+          
+          
+                 ),
+                Row(
+               children: [
+                Expanded(
+                 child: ElevatedButton(onPressed: (){
+                    _getLocation();
+          
+                 },
+                   child: Text("Set Location")),
                 ),
-             
-
-
-
-
-
-
-
-
-
-
-
+          
+                    
+                         
+                      
+                    ],
+                  ),
+          
+          
+          
+                  Row(
+                     mainAxisSize: MainAxisSize.max,
+          
+                  children: [
+                Text(userLocation == null ? "no location" : userLocation!),
+          
+                   
+                  ]
+          
+                  ),
+               
+                  Row( mainAxisSize: MainAxisSize.max,
             
+                    children: [
+                      Text("Add Image",
+                      style: TextStyle(
+                         color: Colors.grey[800],
+                               fontWeight: FontWeight.bold,
+                               fontSize: 20
+            
+                      ),
+                      )                  
+                    ],
+            
+                    ),
+                     
+            
+                     Row(
+                      children: <Widget>[
+                       Expanded(
+                      
+                  
+                   child:IconButton( 
+                          icon: Icon(Icons.add_a_photo),
+                          onPressed: (){
+                            pickImage1();
+                          },
+                         ),
+                       ),
+                    Expanded(
+                    child:IconButton( 
+                          icon: Icon(Icons.add_photo_alternate),
+                          onPressed: (){
+                            pickImage2();
+                          },
+                         ),
+                     
+                   ),
+            
+            
+                     
+            
+                               
+                      ]
+                       ),
+          
+                       Row(
+                         children: [
+                           Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            
+                            // Spacer(),
+                           
+                           image1 != null ? Image.file(image1!,width: 150,height: 150): Image.asset('assets/add1.jpg',height: 80,width: 80,),
+                            // const SizedBox(height: 24),
+                          ],
+          
+                           ),
+                         ],
+                       ),
 
+                        Row(
+                      
+                        
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            
+                            
+                              ElevatedButton(
+              //     disabledColor: Colors.red,
+              // disabledTextColor: Colors.black,
+              // padding: const EdgeInsets.all(20),
+              // textColor: Colors.white,
+              // color: Colors.green,
+              onPressed: ()  async{
+
+               await flowers.add({
               
-            ]
-            
-            
+                'title': title,
+                'phonenumber': no,
+                'description': des,
+                'price':price,
+                'type': type,
+                 'qty': qua + kg,
+                 'location': userLocation,
+               }).then((value) => print('Post Added'));
+
+
+
+
+
+
+                
+              },
+              child: const Text('POST'),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+                 
+                              
+                           
+                          ],
+                      
+                      
+                     ),
+
+                
+              ]
+              
+              
+            ),
           )
           
           
