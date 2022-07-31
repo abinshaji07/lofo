@@ -31,9 +31,9 @@ class BuildTile extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16),
                 child: Hero(
-                  tag: flower.name,
+                  tag: flower.title,
                   child: Image.network(
-                    flower.imageLink,
+                    flower.photoURL,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -44,7 +44,7 @@ class BuildTile extends StatelessWidget {
                 top: 8,
               ),
               child: Text(
-                flower.name,
+                flower.title,
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,

@@ -19,11 +19,15 @@ class BuildBody extends StatefulWidget {
 }
 
 class _BuildBodyState extends State<BuildBody> {
-  late int count;
-  late double price;
+   int count = 0;
+  late String price;
 
   String getPrice() {
-    final value = (count * price).toStringAsFixed(2);
+    if(count == null)
+    {
+      return "0";
+    }
+    final value = (count * int.parse(price)).toStringAsFixed(2);
     return "₹ $value";
   }
 
@@ -53,12 +57,12 @@ class _BuildBodyState extends State<BuildBody> {
     final accentColor = Theme.of(context).colorScheme.secondary;
     final isLight = context.watch<ThemeCubit>().state;
     return Column(
-      children: [
-        _heading("About"),
+      children: <Widget> [
+        _heading("Phone Number"),
         Padding(
           padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 16.0),
           child: Text(
-            widget.flower.description,
+            widget.flower.phonenumber,
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
@@ -113,10 +117,72 @@ class _BuildBodyState extends State<BuildBody> {
                   ),
                 ),
               )
+              ,
+             
             ],
           ),
         ),
+         _heading("Type"),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 16.0),
+          child: Text(
+            widget.flower.type,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+         _heading("Description"),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 16.0),
+          child: Text(
+            widget.flower.description,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+         _heading("Price"),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 16.0),
+          child: Text(
+            widget.flower.price,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+         _heading("Quantity"),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 16.0),
+          child: Text(
+            widget.flower.qty,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+         _heading("Location"),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 16.0),
+          child: Text(
+            widget.flower.location,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+          // Text(widget.flower.title),
+          //     Text(widget.flower.location),
+          //     Text(widget.flower.phonenumber),
+          //     Text(widget.flower.title),
         const Spacer(),
+       
         SafeArea(
           top: false,
           child: Padding(
@@ -138,7 +204,7 @@ class _BuildBodyState extends State<BuildBody> {
                     builder: (context, state) {
                       final isLoading = state is CartInfoLoading;
                       final isExist = state is ItemIsExist;
-
+    
                       return FilledButton(
                         color: isExist ? const Color(0xFF6ED478) : null,
                         title: isExist ? "Added to Cart" : "Add To Cart",
@@ -155,13 +221,26 @@ class _BuildBodyState extends State<BuildBody> {
                                 } else {
                                   final flower = widget.flower;
                                   final cart = Cart(
-                                    id: flower.id,
-                                    imageLink: flower.imageLink,
-                                    name: flower.name,
+                                    title: flower.title,
+                                   type: flower.type,
+                                     phonenumber: flower.phonenumber,
+                                    location: flower.location,
+                                     description: flower.description,
                                     price: flower.price,
-                                    count: count,
+                                     qty: flower.qty,
+                                    photoURL: flower.photoURL,
+                                     count: count,
+                                     addedToCart: flower.addedToCart,
+                                  
+    
+    
+                                    
+    
+    
+        
+       
                                   );
-
+    
                                   context.read<CartInfoBloc>().add(
                                         UpdateCart(cart),
                                       );

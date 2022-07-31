@@ -1,72 +1,106 @@
 import 'package:equatable/equatable.dart';
 
 class Flower extends Equatable {
-  final String id;
-  final String name;
+  final String title;
+  final String type;
+  final String phonenumber;
+  final String location;
+
   final String description;
-  final String imageLink;
-  final double price;
+  final String photoURL;
+  final String price;
+  final String qty;
   final int count;
   final bool addedToCart;
 
   const Flower({
-    required this.id,
-    required this.name,
+    required this.title,
+    required this.type,
+    required this.phonenumber,
+    required this.location,
     required this.description,
-    required this.imageLink,
+    required this.photoURL,
     required this.price,
+    required this.qty,
+   
     required this.count,
     required this.addedToCart,
   });
 
   factory Flower.fromMap(Map<String, dynamic> data, String id) {
     return Flower(
-      id: id,
-      name: data['name'],
+      title: data['title'],
+      type: data['type'],
+      phonenumber: data['phonenumber'],
+      location: data['location'],
       description: data['description'],
-      imageLink: data['imageLink'],
-      price: (data['price'] as int).toDouble(),
+      price: data['price'],
+      qty: data['qty'],
+      photoURL: data['photoURL'],
+      
       count: data['count'],
       addedToCart: data['addedToCart'],
     );
   }
 
   Map<String, dynamic> toMap() => {
-        "name": name,
-        "description": description,
-        "imageLink": imageLink,
-        "price": price,
-        "count": count,
+        "title": title,
+         "type": type,
+         "phonenumber":phonenumber,
+         "location":location,
+         "description":description,
+         "price":price,
+         "qty":qty,
+         "photoURL":photoURL,
+
+
+        
+       "count": count,
         "addedToCart": addedToCart,
       };
 
   Flower copyWith({
-    String? id,
-    String? name,
-    String? description,
-    String? imageLink,
-    double? price,
+    String? title,
+    String? type,
+     String? phonenumber,
+      String? location,
+       String? description,
+        String? price,
+         String? qty,
+          String? photoURL,
+          
+    
     int? count,
-    bool? addedToCart,
+   bool? addedToCart,
   }) =>
       Flower(
-        id: id ?? this.id,
-        name: name ?? this.name,
+
+        title: title ?? this.title,
+        type: type ?? this.type,
+        phonenumber: phonenumber ?? this.phonenumber,
+        location: location ?? this.location,
         description: description ?? this.description,
-        imageLink: imageLink ?? this.imageLink,
         price: price ?? this.price,
-        count: count ?? this.count,
-        addedToCart: addedToCart ?? this.addedToCart,
+        qty: qty ?? this.qty,
+        photoURL: photoURL?? this.photoURL,
+      
+        
+       count: count ?? this.count,
+       addedToCart: addedToCart ?? this.addedToCart,
       );
 
   @override
   List<Object?> get props => [
-        id,
-        name,
+   title,
+    type,
+     phonenumber,
+      location,
         description,
-        imageLink,
         price,
-        count,
-        addedToCart,
+        qty,
+         photoURL,
+       
+       count,
+       addedToCart,
       ];
 }

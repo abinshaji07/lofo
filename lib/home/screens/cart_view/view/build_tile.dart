@@ -53,7 +53,7 @@ class BuildTile extends StatelessWidget {
       ),
       onSwiped: (_) {
         context.read<CartBloc>().add(
-              RemoveItem(id: cart.id),
+              RemoveItem(title: cart.title,),
             );
       },
       horizontalPadding: 16,
@@ -73,7 +73,7 @@ class BuildTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
             ),
             child: Image.network(
-              cart.imageLink,
+              cart.photoURL,
               fit: BoxFit.cover,
             ),
           ),
@@ -84,7 +84,7 @@ class BuildTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                cart.name,
+                cart.title,
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w500,
@@ -93,14 +93,14 @@ class BuildTile extends StatelessWidget {
               const SizedBox(
                 height: 10.0,
               ),
-              Text(
-                '${cart.count * cart.price}',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: accentColor,
-                ),
-              ),
+              // Text(
+              //   '${cart.count * int.parse(cart.price)}',
+              //   style: TextStyle(
+              //     fontSize: 18,
+              //     fontWeight: FontWeight.bold,
+              //     color: accentColor,
+              //   ),
+              // ),
             ],
           ),
           const Spacer(),

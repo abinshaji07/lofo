@@ -17,11 +17,11 @@ class BuildHeader extends StatelessWidget {
         ClipRRect(
           borderRadius: BorderRadius.circular(16),
           child: Hero(
-            tag: flower.name,
+            tag: flower.title,
             child: Image.network(
-              flower.imageLink,
+              flower.photoURL,
               fit: BoxFit.cover,
-              height: 360,
+              height: 100,
               width: double.infinity,
             ),
           ),
@@ -47,7 +47,7 @@ class BuildHeader extends StatelessWidget {
                 width: 16,
               ),
               Text(
-                flower.name,
+                flower.title,
                 style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,

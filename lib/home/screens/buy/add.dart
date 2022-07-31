@@ -1,12 +1,19 @@
 
+
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flower_selling_app/home/screens/buy/firestore_storage.dart';
 import 'package:flower_selling_app/location_services.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
 import 'package:path/path.dart';
+import 'package:uuid/uuid.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 
 
@@ -24,7 +31,10 @@ class _addtState extends State<addt> {
    late bool _serviceEnabled;
   late PermissionStatus _permissionGranted;
   String? _address;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   
+  bool isLoading = false;
 
 
   int tag = 1;
@@ -97,12 +107,16 @@ class _addtState extends State<addt> {
 
 //upload image start
 
-   File? image1;
+  //  File? image1;
+  Uint8List? image1;
    Future pickImage1() async {
     final image = await ImagePicker().pickImage(source:ImageSource.camera );
     if(image == null) return;
-    final imageTemporary = File(image.path);
-    setState(() => this.image1 = imageTemporary);
+    // final imageTemporary = File(image.path);
+    final imageTemporary = await image.readAsBytes();
+    setState(() => image1 = imageTemporary);
+   
+    
   }
 
 
@@ -110,14 +124,26 @@ class _addtState extends State<addt> {
    Future pickImage2() async {
     final image = await ImagePicker().pickImage(source:ImageSource.gallery );
     if(image == null) return;
-    final imageTemporary = File(image.path);
-    setState(() => this.image1 = imageTemporary);
+    // final imageTemporary = File(image.path);
+    final imageTemporary = await image.readAsBytes();
+
+    setState(() => image1 = imageTemporary);
+     
     
   }
 
+
+
+
+  
+
+
+
 CollectionReference flowers = FirebaseFirestore.instance.collection('flowers');
 
-late String title,no,des,price,photo,fd,type,qua,kg,loc;
+late String title,no,des,price,photo,fd,qua,loc;
+  String kg = "kg";
+  String type = "Restaurant";
 
   @override
   Widget build(BuildContext context) {
@@ -556,7 +582,7 @@ late String title,no,des,price,photo,fd,type,qua,kg,loc;
                             
                             // Spacer(),
                            
-                           image1 != null ? Image.file(image1!,width: 150,height: 150): Image.asset('assets/add1.jpg',height: 80,width: 80,),
+                           image1 != null ? Image.memory(image1!,width: 150,height: 150): Image.asset('assets/add1.jpg',height: 80,width: 80,),
                             // const SizedBox(height: 24),
                           ],
           
@@ -578,26 +604,51 @@ late String title,no,des,price,photo,fd,type,qua,kg,loc;
               textColor: Colors.white,
               color: Colors.green,
               onPressed: () async  {
-                
-                await flowers.add({
+
+                setState(() {
+                  isLoading = true;
+                });
+                //Image(image: NetworkImage(photoURL),);
+                if(image1 == null)
+                {
+                  print("Image is null");
+                  return;
+                }
+
+                try {
+                   String photoURL = await StorageMethods().uploadImageToStorage('image', image1!);
+                print("Uploaded");
+                String uuid = Uuid().v1();
+
+                await flowers.doc(uuid).set({
               
                 'title': title,
-                'phonenumber': no,
-                'description': des,
+                 'phonenumber': no,
+                 'description': des,
                 'price':price,
                 'type': type,
                  'qty': qua + kg,
-                 'location': userLocation,
+                 'photoURL': photoURL,
+                'location': userLocation,
                }).then((value) => print('Post Added'));
 
+                print("SUCCESS");
 
 
 
+                  
+                } catch (e) {
+                  print("ERROR" + e.toString());
+                }
+               
 
 
-                
+                setState(() {
+                  
+                  isLoading = false;
+                });
               },
-              child: const Text('POST'),
+              child: isLoading ? const CircularProgressIndicator() : const Text('POST'),
             ),
             const SizedBox(
               height: 20,

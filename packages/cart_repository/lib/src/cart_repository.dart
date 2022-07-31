@@ -28,7 +28,7 @@ class CartRepo {
   }
 
   Future<bool> addToCart(Cart cart) async {
-    final docReference = fireStore.collection('cart').doc(cart.id);
+    final docReference = fireStore.collection('cart').doc(cart.title);
     try {
       await docReference.set(cart.toMap());
       return true;

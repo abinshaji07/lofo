@@ -20,8 +20,12 @@ class CartView extends StatelessWidget {
   }
 
   String _getTotal(List<Cart> items) {
-    final double total =
-        items.fold(0, (total, next) => total + (next.count * next.price));
+    final double total = items.fold(0, (total, next) {
+      if(next.count == null ){
+        return 0;
+      }
+      return total + (next.count * int.parse(next.price));
+    });
 
     return total.toStringAsFixed(2);
   }
@@ -36,6 +40,8 @@ class CartView extends StatelessWidget {
           return const LoadingWidget();
         } else if (state is CartLoaded) {
           final List<Cart> cartItems = state.data;
+          print(state.data);
+          
           if (cartItems.isEmpty) {
             return const Center(
               child: Text(

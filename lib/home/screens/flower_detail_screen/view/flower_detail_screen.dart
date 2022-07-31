@@ -16,7 +16,7 @@ class FlowerDetailScreen extends StatelessWidget {
     return BlocProvider<CartInfoBloc>(
       create: (context) => CartInfoBloc(
         cartRepo: context.read<CartRepo>(),
-      )..add(CheckFlowerInCart(flower.id)),
+      )..add(CheckFlowerInCart(flower.title)),
       child: FlowerDetailScreen._(key, flower),
     );
   }
@@ -24,16 +24,19 @@ class FlowerDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          BuildHeader(flower: _flower),
-          Expanded(
-            child: BuildBody(
-              flower: _flower,
+      body: SafeArea(
+        child: Column(
+          
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+          //  BuildHeader(flower: _flower),
+            Expanded(
+              child: BuildBody(
+                flower: _flower,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

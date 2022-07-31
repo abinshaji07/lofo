@@ -18,12 +18,23 @@ class CartUpdated extends CartEvent {
 }
 
 class RemoveItem extends CartEvent {
-  final String id;
+  final String title;
 
   const RemoveItem({
-    required this.id,
+    
+     required this.title,
+    // required this.type,
+    // required this.phonenumber,
+    // required this.location,
+    // required this.description,
+    // required this.photoURL,
+    // required this.price,
+    // required this.qty,
+   
+    // required this.count,
+    // required this.addedToCart,
   });
 
   @override
-  List<Object> get props => [id];
+  List<Object> get props => [title];
 }

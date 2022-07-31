@@ -33,6 +33,7 @@ class _HomeState extends State<Home> {
     final accentColor = theme.colorScheme.secondary;
     final bottomNavigationBarColor =
         theme.bottomNavigationBarTheme.backgroundColor;
+        
     return Scaffold(
       body: ScreenSwitch(
         controller: screenController,

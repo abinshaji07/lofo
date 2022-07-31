@@ -44,7 +44,9 @@ class FlowerGridView extends StatelessWidget {
                     childAspectRatio: 0.85,
                     children: [
                       ...state.flowers.map(
-                        (flower) => AnimationConfiguration.staggeredGrid(
+                        (flower) {
+                          print(flower);
+                         return AnimationConfiguration.staggeredGrid(
                           columnCount: 2,
                           position: state.flowers.indexOf(flower),
                           duration: const Duration(milliseconds: 800),
@@ -52,11 +54,12 @@ class FlowerGridView extends StatelessWidget {
                             verticalOffset: 50.0,
                             child: FadeInAnimation(
                               child: BuildTile(
-                                flower: flower,
+                                flower: flower.copyWith(addedToCart: false),
                               ),
                             ),
                           ),
-                        ),
+                        );
+                        },
                       )
                     ]),
               );

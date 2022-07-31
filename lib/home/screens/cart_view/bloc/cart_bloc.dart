@@ -32,7 +32,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   }
 
   _onRemoveItem(RemoveItem event, Emitter<CartState> emit) async {
-    await _cartRepo.deleteFromCart(event.id);
+    await _cartRepo.deleteFromCart(event.title);
   }
 
   @override
