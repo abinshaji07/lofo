@@ -75,6 +75,7 @@ flutter:
   assets:
     - assets/images/
     - assets/logo.png
+    - assets/
   fonts:
     - family: Asap
       fonts:

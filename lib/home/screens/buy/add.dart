@@ -6,6 +6,8 @@ import 'package:flower_selling_app/location_services.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
+import 'package:path/path.dart';
+
 
 
 
@@ -569,15 +571,15 @@ late String title,no,des,price,photo,fd,type,qua,kg,loc;
                           children: <Widget>[
                             
                             
-                              ElevatedButton(
-              //     disabledColor: Colors.red,
-              // disabledTextColor: Colors.black,
-              // padding: const EdgeInsets.all(20),
-              // textColor: Colors.white,
-              // color: Colors.green,
-              onPressed: ()  async{
-
-               await flowers.add({
+                              RaisedButton(
+                  disabledColor: Colors.red,
+              disabledTextColor: Colors.black,
+              padding: const EdgeInsets.all(20),
+              textColor: Colors.white,
+              color: Colors.green,
+              onPressed: () async  {
+                
+                await flowers.add({
               
                 'title': title,
                 'phonenumber': no,
