@@ -1,7 +1,9 @@
+
 import 'package:cart_repository/cart_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import '../bloc/cart_bloc.dart';
 import '../../../../widgets/loading_widget.dart';
 import '../../../../widgets/filled_button.dart';
@@ -21,7 +23,7 @@ class CartView extends StatelessWidget {
 
   String _getTotal(List<Cart> items) {
     final double total = items.fold(0, (total, next) {
-      if(next.count == null ){
+      if (next.count == null) {
         return 0;
       }
       return total + (next.count * int.parse(next.price));
@@ -29,6 +31,25 @@ class CartView extends StatelessWidget {
 
     return total.toStringAsFixed(2);
   }
+
+  _getNumbers(List<Cart> cartItems) => Container(
+    width: double.maxFinite,
+    child: ListView.builder(
+          shrinkWrap: true,
+          itemBuilder: (context, index) => Card(
+              child: ListTile(
+            leading: CircleAvatar(
+              foregroundImage: NetworkImage(cartItems[index].photoURL),
+            ),
+            title: Text(cartItems[index].phonenumber),
+            subtitle: Text(cartItems[index].title),
+            onTap: () async {
+              await launchUrlString("tel:${cartItems[index].phonenumber}");
+            },
+          ),),
+          itemCount: cartItems.length,
+        ),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +62,7 @@ class CartView extends StatelessWidget {
         } else if (state is CartLoaded) {
           final List<Cart> cartItems = state.data;
           print(state.data);
-          
+
           if (cartItems.isEmpty) {
             return const Center(
               child: Text(
@@ -73,7 +94,14 @@ class CartView extends StatelessWidget {
                           width: 140,
                           child: FilledButton(
                             title: "Check Out",
-                            onTap: () {},
+                            onTap: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (_) => AlertDialog(
+                                        title: Text('Place the Oder'),
+                                        content: _getNumbers(cartItems),
+                                      ));
+                            },
                           ),
                         ),
                       ],

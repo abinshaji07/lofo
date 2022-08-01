@@ -1,19 +1,23 @@
 import 'package:equatable/equatable.dart';
 
 class Flower extends Equatable {
+  final String id;
   final String title;
   final String type;
   final String phonenumber;
+
   final String location;
 
   final String description;
   final String photoURL;
   final String price;
+  final String uid;
   final String qty;
   final int count;
   final bool addedToCart;
 
   const Flower({
+    required this.id,
     required this.title,
     required this.type,
     required this.phonenumber,
@@ -22,6 +26,7 @@ class Flower extends Equatable {
     required this.photoURL,
     required this.price,
     required this.qty,
+    required this.uid,
    
     required this.count,
     required this.addedToCart,
@@ -29,6 +34,7 @@ class Flower extends Equatable {
 
   factory Flower.fromMap(Map<String, dynamic> data, String id) {
     return Flower(
+      id: data['id'],
       title: data['title'],
       type: data['type'],
       phonenumber: data['phonenumber'],
@@ -37,6 +43,7 @@ class Flower extends Equatable {
       price: data['price'],
       qty: data['qty'],
       photoURL: data['photoURL'],
+      uid: data['uid'],
       
       count: data['count'],
       addedToCart: data['addedToCart'],
@@ -68,13 +75,14 @@ class Flower extends Equatable {
         String? price,
          String? qty,
           String? photoURL,
-          
+          String? uid,
+          String? id,
     
     int? count,
    bool? addedToCart,
   }) =>
       Flower(
-
+        id: id  ?? this.id,
         title: title ?? this.title,
         type: type ?? this.type,
         phonenumber: phonenumber ?? this.phonenumber,
@@ -83,7 +91,7 @@ class Flower extends Equatable {
         price: price ?? this.price,
         qty: qty ?? this.qty,
         photoURL: photoURL?? this.photoURL,
-      
+        uid: uid ?? this.uid,
         
        count: count ?? this.count,
        addedToCart: addedToCart ?? this.addedToCart,

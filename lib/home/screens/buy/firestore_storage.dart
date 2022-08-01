@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:uuid/uuid.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class StorageMethods {
   final FirebaseStorage _storage = FirebaseStorage.instance;
@@ -10,7 +11,7 @@ class StorageMethods {
  Future<Uint8List> compressList(Uint8List list) async {
     var result = await FlutterImageCompress.compressWithList(
       list,
-      quality: 50,
+      quality: 10,
       
     );
     print(list.length);

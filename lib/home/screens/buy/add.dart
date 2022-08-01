@@ -145,6 +145,9 @@ late String title,no,des,price,photo,fd,qua,loc;
   String kg = "kg";
   String type = "Restaurant";
 
+  FirebaseAuth auth = FirebaseAuth.instance;
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -619,10 +622,13 @@ late String title,no,des,price,photo,fd,qua,loc;
                    String photoURL = await StorageMethods().uploadImageToStorage('image', image1!);
                 print("Uploaded");
                 String uuid = Uuid().v1();
+                String _auth = FirebaseAuth.instance.currentUser!.uid;
+                print(_auth);
 
                 await flowers.doc(uuid).set({
-              
+                  'id': uuid,
                 'title': title,
+                'uid' : _auth,
                  'phonenumber': no,
                  'description': des,
                 'price':price,
@@ -630,7 +636,10 @@ late String title,no,des,price,photo,fd,qua,loc;
                  'qty': qua + kg,
                  'photoURL': photoURL,
                 'location': userLocation,
-               }).then((value) => print('Post Added'));
+               }).then((value) {
+                print('Post Added');
+                Navigator.pop(context);
+               });
 
                 print("SUCCESS");
 

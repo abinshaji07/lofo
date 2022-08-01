@@ -47,18 +47,18 @@ class ProfileView extends StatelessWidget {
           ListTile(
             title: Text("${user.email}"),
           ),
-          const ListTile(
-            title: Text('Address'),
-            trailing: Icon(Icons.arrow_forward_ios_rounded),
-          ),
-          const ListTile(
-            title: Text('Track Order'),
-            trailing: Icon(Icons.arrow_forward_ios_rounded),
-          ),
-          const ListTile(
-            title: Text('Purchase history'),
-            trailing: Icon(Icons.arrow_forward_ios_rounded),
-          ),
+          // const ListTile(
+          //   title: Text('Address'),
+          //   trailing: Icon(Icons.arrow_forward_ios_rounded),
+          // ),
+          // const ListTile(
+          //   title: Text('Track Order'),
+          //   trailing: Icon(Icons.arrow_forward_ios_rounded),
+          // ),
+          // const ListTile(
+          //   title: Text('Purchase history'),
+          //   trailing: Icon(Icons.arrow_forward_ios_rounded),
+          // ),
           ListTile(
              
             onTap: () {
